@@ -3,338 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แมวทายใจ (Cat Oracle) 🐾</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>คุณเหมาะกับการขายอะไรมากที่สุด? 🛍️</title>
     <style>
+        :root {
+            --primary: #8E44AD;
+            --bg: #F5EEF8;
+            --card-bg: #FFFFFF;
+            --text: #2C3E50;
+        }
+
         body {
-            font-family: 'Tahoma', sans-serif;
-            background-color: #fdf6ec;
-            background-image: radial-gradient(#f3d5b5 1px, transparent 1px);
-            background-size: 16px 16px;
+            font-family: 'Sarabun', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E8DAEF 0%, #FADBD8 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            color: #4a4a4a;
-        }
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 28px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
-            text-align: center;
-            max-width: 380px;
-            width: 90%;
-            position: relative;
-        }
-        h1 { font-size: 1.3rem; color: #ff6b81; margin-bottom: 8px; }
-        p { font-size: 0.85rem; color: #7f8c8d; margin-top: 0; }
-        
-        .options-grid { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
-        .option-btn {
-            background: #fff5f6;
-            border: 2px solid #ffe0e6;
-            border-radius: 18px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .option-btn:hover { background: #ffe3e8; border-color: #ffb6c1; }
-        .emoji-set { font-size: 1.4rem; }
-
-        .modal-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 28px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
             box-sizing: border-box;
-            z-index: 10;
         }
-        .mode-btn {
-            width: 100%; padding: 12px; margin: 6px 0; border: none;
-            border-radius: 14px; background: #fff0f3; color: #ff5252;
-            font-weight: bold; cursor: pointer; font-size: 0.85rem;
-            border: 1px solid #ffccd5;
-        }
-        .mode-btn:hover { background: #ffccd5; }
 
-        .id-card-wrapper {
-            background: #fff;
-            border: 2px dashed #ffb6c1;
-            border-radius: 20px;
-            padding: 18px;
-            margin: 15px 0;
-            position: relative;
-            text-align: left;
-        }
-        .mode-badge {
-            display: inline-block;
-            background: #ffe3e8;
-            color: #ff4757;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-        }
-        .id-header { font-size: 0.65rem; color: #b2bec3; font-weight: bold; letter-spacing: 1px; float: right; }
-        .id-avatar-box { text-align: center; margin: 10px 0; }
-        .id-avatar { font-size: 3.5rem; }
-        .id-title { font-size: 1.1rem; font-weight: bold; color: #2d3436; text-align: center; margin-bottom: 10px; }
-        
-        .tags { display: flex; justify-content: center; gap: 5px; margin-bottom: 10px; }
-        .tag { background: #ffeaa7; color: #d63031; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
-
-        .id-desc {
-            font-size: 0.85rem; color: #636e72; line-height: 1.5;
-            background: #fdf6ec; padding: 12px; border-radius: 12px;
-        }
-        .extra-info {
-            background: #fff0f3; padding: 8px 12px; border-radius: 10px;
-            font-size: 0.8rem; color: #d63031; margin-top: 8px; font-weight: bold;
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(142, 68, 173, 0.2);
             text-align: center;
         }
 
-        .stamp {
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #EAECEE;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
             display: none;
-            position: absolute;
-            bottom: 15px; right: 15px;
-            border: 2px solid #ff4757; color: #ff4757;
-            font-size: 0.75rem; font-weight: bold;
-            padding: 4px 10px; border-radius: 8px;
-            transform: rotate(-12deg); background: rgba(255,255,255,0.9);
         }
 
-        .feed-box { background: #fff5f6; border-radius: 16px; padding: 12px; margin-top: 10px; }
-        .feed-status { font-size: 0.85rem; color: #ff6b81; font-weight: bold; margin-bottom: 8px; }
-        
-        .btn-group { display: flex; gap: 8px; margin-top: 10px; }
-        .action-btn {
-            flex: 1; border: none; padding: 10px; border-radius: 12px;
-            font-weight: bold; cursor: pointer; font-size: 0.85rem; transition: 0.2s;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8E44AD, #3498DB);
+            width: 0%;
+            transition: width 0.3s;
         }
-        .btn-feed { background: #ffeaa7; color: #d63031; width: 100%; padding: 12px; font-size: 0.95rem; }
-        .btn-feed:disabled { background: #dfe6e9; color: #b2bec3; cursor: not-allowed; }
-        .btn-download { background: #55efc4; color: #00b894; display: none; width: 100%; padding: 12px; margin-top: 5px; font-size: 0.95rem; }
-        .btn-change { background: #ff7675; color: white; }
-        .btn-reset { background: #dfe6e9; color: #636e72; }
 
-        .fish-particle {
-            position: fixed; font-size: 2rem; pointer-events: none;
-            animation: floatUp 1.2s ease-out forwards; z-index: 999;
+        .title { color: var(--primary); font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; }
+        .subtitle { font-size: 0.95rem; color: #7F8C8D; margin-bottom: 20px; }
+
+        .btn-start {
+            background: linear-gradient(135deg, #8E44AD, #3498DB);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
+            transition: 0.2s;
         }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.8); opacity: 1; }
-            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+
+        .options-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+
+        .option-btn {
+            background: #F8F9F9;
+            border: 2px solid #EBEDEF;
+            padding: 12px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #34495E;
+        }
+
+        .option-btn:hover {
+            background: #E8DAEF;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .result-card {
+            background: #FAF5FF;
+            border: 2px dashed var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .result-icon { font-size: 3.8rem; margin-bottom: 10px; }
+        .result-title { font-size: 1.3rem; color: var(--primary); font-weight: bold; margin-bottom: 8px; }
+        .result-desc { font-size: 0.9rem; color: #566573; line-height: 1.5; text-align: left; }
+
+        .restart-btn {
+            margin-top: 20px;
+            background: #E74C3C;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <!-- สเต็ป 1: เลือกอีโมจิ -->
-        <div id="quiz-section">
-            <h1>🔮 แมวทายใจ (Cat Oracle)</h1>
-            <p>เลือกเซ็ตอีโมจิ เพื่ออัญเชิญร่างแม่หมอแมวประจำตัวคุณ</p>
-            <div class="options-grid">
-                <button class="option-btn" onclick="selectEmoji(0)">
-                    <span class="emoji-set">🌙 ☕ 📚</span><span>เซ็ต A</span>
-                </button>
-                <button class="option-btn" onclick="selectEmoji(1)">
-                    <span class="emoji-set">🎨 🎧 🚀</span><span>เซ็ต B</span>
-                </button>
-                <button class="option-btn" onclick="selectEmoji(2)">
-                    <span class="emoji-set">🌊 🌿 🛋️</span><span>เซ็ต C</span>
-                </button>
-                <button class="option-btn" onclick="selectEmoji(3)">
-                    <span class="emoji-set">🔥 🏆 🍕</span><span>เซ็ต D</span>
-                </button>
-            </div>
-        </div>
+<div class="container">
 
-        <!-- Pop-up เลือกแนวทำนาย -->
-        <div class="modal-overlay" id="mode-modal">
-            <h3 style="margin-top:0; color:#ff6b81;">เลือกแนวคำทำนายจากแมว 🐾</h3>
-            <button class="mode-btn" onclick="generateOracle(1)">1. Cat Archetype (ตัวตนแมวของคุณ)</button>
-            <button class="mode-btn" onclick="generateOracle(2)">2. Cat Oracle Card (คำทำนายแม่หมอ)</button>
-            <button class="mode-btn" onclick="generateOracle(3)">3. Emoji Translator (แมวแปลอีโมจิ)</button>
-        </div>
+    <div class="progress-bar" id="pBar"><div class="progress-fill" id="pFill"></div></div>
 
-        <!-- สเต็ป 2: แสดงบัตรสแกนตัวตนแมว -->
-        <div id="result-section" style="display: none;">
-            
-            <div class="id-card-wrapper" id="cat-card">
-                <span class="id-header">OFFICIAL CAT ID</span>
-                <span class="mode-badge" id="mode-badge">Mode 1: Archetype</span>
-                
-                <div class="id-avatar-box">
-                    <div class="id-avatar" id="cat-avatar">🃏⚡</div>
-                </div>
+    <!-- หน้าแรก -->
+    <div class="step active" id="step-0">
+        <div style="font-size: 4rem; margin-bottom: 10px;">🔮✨</div>
+        <div class="title">วิเคราะห์ตัวตน... คุณเหมาะกับการขายอะไรมากที่สุด?</div>
+        <div class="subtitle">ตอบคำถามทายนิสัย 6 ข้อ ค้นหาสินค้าที่ใช่สำหรับตัวคุณ!</div>
+        <button class="btn-start" onclick="startQuiz()">เริ่มเลย 🚀</button>
+    </div>
 
-                <div class="id-title" id="cat-title">กำลังโหลด...</div>
-                
-                <div class="tags" id="cat-tags"></div>
-
-                <div class="id-desc" id="cat-desc">...</div>
-
-                <div class="extra-info" id="extra-info">...</div>
-
-                <div class="stamp" id="cleared-stamp">✔ แก้เคล็ดแล้ว 🐟</div>
-            </div>
-
-            <!-- โซนภารกิจให้อาหารแมว -->
-            <div class="feed-box">
-                <div class="feed-status" id="feed-status-text">ต้องให้อาหารแก้เคล็ดอีก 0 ครั้ง 🐟</div>
-                <button class="action-btn btn-feed" id="feed-btn" onclick="feedCat()">🐟 ให้อาหารแมวแก้เคล็ด!</button>
-                <button class="action-btn btn-download" id="download-btn" onclick="downloadCard()">📸 เซฟบัตรลงเครื่อง</button>
-            </div>
-
-            <!-- ปุ่มเปลี่ยนแนว/สุ่มใหม่ -->
-            <div class="btn-group">
-                <button class="action-btn btn-change" onclick="openModeModal()">🔀 เปลี่ยนแนวทำนาย</button>
-                <button class="action-btn btn-reset" onclick="resetQuiz()">🔄 สุ่มอารมณ์ใหม่</button>
-            </div>
+    <!-- ข้อ 1 -->
+    <div class="step" id="step-1">
+        <div class="title">ข้อ 1: บรรยากาศแบบไหนที่ทำให้คุณรู้สึกผ่อนคลายที่สุด?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('perfume')">🌸 ห้องที่อบอวลไปด้วยกลิ่นหอมสะอาด ละมุนใจ</button>
+            <button class="option-btn" onclick="answer('coffee')">☕ ร้านกาแฟชิลๆ ได้จิบเครื่องดื่มอุ่นๆ นั่งคุยกับเพื่อน</button>
+            <button class="option-btn" onclick="answer('gadget')">📱 มุมทำงานที่มีอุปกรณ์ไฮเทค คลีนๆ เป็นระเบียบ</button>
+            <button class="option-btn" onclick="answer('plant')">🪴 พื้นที่เขียวขจี ได้รดน้ำต้นไม้ มองธรรมชาติ</button>
         </div>
     </div>
 
-    <script>
-        let selectedIndex = 0;
-        let currentFeedCount = 0;
-        let requiredFeedCount = 3; // จำนวนที่จะถูกสุ่มในแต่ละคำทำนาย
+    <!-- ข้อ 2 -->
+    <div class="step" id="step-2">
+        <div class="title">ข้อ 2: เพื่อนๆ มักชมคุณในเรื่องไหนบ่อยที่สุด?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('perfume')">✨ ตัวหอมตลอดเวลา แต่งตัวมีเสน่ห์ รสนิยมดี</button>
+            <button class="option-btn" onclick="answer('accessories')">🕶️ แต่งตัวเก๋ แมตช์เครื่องประดับชิค ไม่เหมือนใคร</button>
+            <button class="option-btn" onclick="answer('healthy')">💪 พลังเยอะ รักษาสุขภาพ คอยชวนคนอื่นดูแลตัวเอง</button>
+            <button class="option-btn" onclick="answer('gadget')">🛠️ เก่งเรื่องเทคโนโลยี ปัญหาอุปกรณ์ไอทีถามได้หมด</button>
+        </div>
+    </div>
 
-        const catData = [
-            {
-                avatar: "🐈‍⬛",
-                mode1: { badge: "Mode 1: Cat Archetype", title: "ร่างแมวส้มผู้ปลีกวิเวก", tags: ["#เซฟโซน", "#อย่าเพิ่งทัก"], desc: "คุณต้องการพื้นที่ส่วนตัวขั้นสุด มนุษย์คนไหนเข้าหาช่วงนี้แนะนำให้ขู่ฟ่อแล้วเดินหนีไปนอนเงียบๆ", extra: "✨ เลขมงคล: 04" },
-                mode2: { badge: "Mode 2: Cat Oracle Card", title: "ดวงฟันฝ่าอุปสรรค", tags: ["#ไม่มีอะไรขวางได้", "#ชนะทุกดราม่า"], desc: "ถ้ามีใครมาหาเรื่องหรือมีปัญหาเข้ามาปะทะ ไม่ต้องกลัว! ความเปรี้ยวและความฉลาดของคุณจะเอาชนะได้ทุกสถานการณ์", extra: "✨ เลขมงคลสแกน: 88" },
-                mode3: { badge: "Mode 3: Emoji Translator", title: "ร่างแมวก้อนขนเหน็ดเหนื่อย", tags: ["#หมดแพชชัน", "#อยากนอน"], desc: "อีโมจิที่คุณเลือก แมวแปลได้ว่า 'มนุษย์คนนี้เหนื่อยกับโลกภายนอกจนอยากเปลี่ยนร่างเป็นก้อนขนแล้ว'", extra: "✨ เลขมงคล: 00" }
-            },
-            {
-                avatar: "😼⚡",
-                mode1: { badge: "Mode 1: Cat Archetype", title: "ร่างแมวเปรี้ยวสายบวก", tags: ["#ตัวตึง", "#คึกตอนตี3"], desc: "พลังงานครีเอทีฟเต็มเปี่ยม พร้อมจะไปตบชามน้ำพลิกหรือวิ่งคึกรอบบ้านได้ตลอดเวลา!", extra: "✨ เลขมงคล: 77" },
-                mode2: { badge: "Mode 2: Cat Oracle Card", title: "ดวงไอเดียพุ่งกระฉูด", tags: ["#คิดใหญ่", "#เริ่มเลย"], desc: "อยากทำอะไรให้ลุยเลย แต่ถ้ารู้สึกเบื่อเมื่อไหร่ ให้ฝนเล็บใส่โซฟาเพื่อระบายอารมณ์", extra: "✨ เลขมงคลสแกน: 39" },
-                mode3: { badge: "Mode 3: Emoji Translator", title: "ร่างแมวสมองไวแต่กายใจนิ่ง", tags: ["#เพ้อฝัน", "#โปรเจกต์ล้านแปด"], desc: "แปลได้ว่า 'สมองของคุณกำลังวิ่งเร็วเป็นร้อยไมล์ต่อชั่วโมง แต่ร่างกายยังนิ่งเป็นก้อนหิน'", extra: "✨ เลขมงคล: 12" }
+    <!-- ข้อ 3 -->
+    <div class="step" id="step-3">
+        <div class="title">ข้อ 3: วันหยุดยาว กิจกรรมโปรดของคุณคือ?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('accessories')">🎨 ไปเดินหอศิลป์ ตลาดแฮนด์เมด เลือกซื้อของเก๋ๆ</button>
+            <button class="option-btn" onclick="answer('healthy')">🏃‍♂️ ออกกำลังกาย ทำอาหารสุขภาพ ปิกนิกรับลม</button>
+            <button class="option-btn" onclick="answer('plant')">จัดบ้านใหม่ จัดสวน จัดมุมห้องให้น่าอยู่ขึ้น</button>
+            <button class="option-btn" onclick="answer('coffee')">ตระเวนลองชิมร้านกาแฟ/ชาพรีเมียมเจ้าดัง</button>
+        </div>
+    </div>
+
+    <!-- ข้อ 4 -->
+    <div class="step" id="step-4">
+        <div class="title">ข้อ 4: ถ้าต้องเลือกของขวัญให้เพื่อนสนิท คุณมักจะเลือกอะไร?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('perfume')">💐 น้ำหอม/เทียนหอม กลิ่นพิเศษที่มีความหมายดีๆ</button>
+            <button class="option-btn" onclick="answer('gadget')">🎧 แกดเจ็ตเจ๋งๆ หรือ Gadget พกพาสุดสะดวกล้ำๆ</button>
+            <button class="option-btn" onclick="answer('plant')">🪴 ต้นไม้ประดับน่ารักๆ พร้อมกระถางสวยๆ</button>
+            <button class="option-btn" onclick="answer('coffee')">เซ็ตชา/เมล็ดกาแฟดริป พร้อมแก้วดีไซน์สวย</button>
+        </div>
+    </div>
+
+    <!-- ข้อ 5 -->
+    <div class="step" id="step-5">
+        <div class="title">ข้อ 5: สไตล์การคุยหรือมนุษยสัมพันธ์ของคุณเป็นแบบไหน?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('coffee')">🤝 เข้ากับคนง่าย ใจเย็น รับฟัง และเป็นที่พึ่งพาได้</button>
+            <button class="option-btn" onclick="answer('perfume')">💎 ชวนคุยเก่ง ละเมียดละไม สร้างความประทับใจแรกได้ดี</button>
+            <button class="option-btn" onclick="answer('healthy')">⚡ ตรงไปตรงมา กระตือรือร้น ชอบส่งพลังบวกให้คนอื่น</button>
+            <button class="option-btn" onclick="answer('accessories')">🎯 ช่างสังเกต ชอบแนะนำเทรนด์เด็ดๆ ให้เพื่อนเสมอ</button>
+        </div>
+    </div>
+
+    <!-- ข้อ 6 -->
+    <div class="step" id="step-6">
+        <div class="title">ข้อ 6: เวลาเจอสภาวะเครียด คุณใช้สิ่งไหนฮีลใจตัวเอง?</div>
+        <div class="options-list">
+            <button class="option-btn" onclick="answer('perfume')">🕯️ จุดอโรม่า สูดกลิ่นหอมผ่อนคลาย เปิดเพลงเบาๆ</button>
+            <button class="option-btn" onclick="answer('healthy')">🥗 กินของอร่อยที่มีประโยชน์ หรือออกไปเรียกเหงื่อ</button>
+            <button class="option-btn" onclick="answer('plant')">🍃 อยู่เงียบๆ มองสีเขียว นั่งพักผ่อนในมุมโปรด</button>
+            <button class="option-btn" onclick="answer('gadget')">🎮 ท่องโลกโซเชียล เล่นเกม ดูไอเทมใหม่ๆ เพลินๆ</button>
+        </div>
+    </div>
+
+    <!-- หน้าผลลัพธ์ -->
+    <div class="step" id="step-result">
+        <div class="title" style="margin-bottom: 5px;">🎉 สินค้าที่คุณเหมาะจะขายที่สุดคือ...</div>
+        <div class="result-card">
+            <div class="result-icon" id="resIcon">🌸</div>
+            <div class="result-title" id="resTitle">---</div>
+            <div class="result-desc" id="resDesc">กำลังประมวลผล...</div>
+        </div>
+        <button class="restart-btn" onclick="restart()">🔄 เล่นใหม่อีกครั้ง</button>
+    </div>
+
+</div>
+
+<script>
+    let scores = { perfume: 0, coffee: 0, accessories: 0, healthy: 0, plant: 0, gadget: 0 };
+    let currentStep = 0;
+
+    const results = {
+        perfume: {
+            icon: "🌸✨",
+            title: "น้ำหอม & เครื่องหอมพรีเมียม",
+            desc: "<b>สายเสน่ห์ & สร้างบรรยากาศ:</b><br>คุณเป็นคนละเอียดอ่อน มีรสนิยมดี และใส่ใจเรื่องความรู้สึกของคนรอบข้าง น้ำหอมไม่ได้เป็นแค่ของใช้ แต่มันคือเรื่องของ 'อารมณ์ เสน่ห์ และภาพลักษณ์' คนที่มีสไตล์เฉพาะตัวแบบคุณจะขายสินค้ากลุ่มนี้ได้อินและน่าเชื่อถือที่สุด!"
+        },
+        coffee: {
+            icon: "☕อิ่มใจ",
+            title: "เมล็ดกาแฟดริป & ชาพรีเมียม",
+            desc: "<b>สายอบอุ่น & มิตรภาพ:</b><br>คุณเป็นคนที่ใครอยู่ใกล้ก็สบายใจ เป็นผู้ฟังที่ดี สินค้ากลุ่มกาแฟหรือชาคุณภาพเยี่ยม จะช่วยให้คุณเชื่อมสัมพันธ์กับลูกค้าได้ดี ดึงเสน่ห์ความอุ่นใจของคุณออกมาได้เต็มที่!"
+        },
+        accessories: {
+            icon: "👓✨",
+            title: "แว่นตา & เครื่องประดับแฟชั่น",
+            desc: "<b>สายเก๋ & ช่างสังเกต:</b><br>คุณมีสายตาแหลมคมในการเลือกของ มักเห็นรายละเอียดที่คนอื่นมองข้าม ชื่นชอบความสวยงาม สินค้าประเภทแฟชั่นจะทำให้คุณได้ปล่อยของและความสร้างสรรค์อย่างสนุกสนาน!"
+        },
+        healthy: {
+            icon: "🥗💪",
+            title: "อาหารสุขภาพ & สแน็คคลีน",
+            desc: "<b>สายแอ็กทีฟ & ใส่ใจสุขภาพ:</b><br>คุณเป็นคนพลังเยอะ ชอบส่งต่อสิ่งดีๆ ให้คนอื่น สินค้าสายสุขภาพจะทำให้คุณถ่ายทอดความปรารถนาดีและความจริงใจไปยังลูกค้าได้อย่างเป็นธรรมชาติ!"
+        },
+        plant: {
+            icon: "🪴🍃",
+            title: "ต้นไม้ประดับ & ของแต่งบ้าน",
+            desc: "<b>สายสุนทรีย์ & ละเมียดละไม:</b><br>คุณมีความสุขกับความสงบ เรียบง่าย และชอบสร้างพื้นที่สบายใจ ของแต่งบ้านหรือต้นไม้น่ารักๆ จะตอบโจทย์ความใส่ใจในรายละเอียดของคุณได้ดีที่สุด!"
+        },
+        gadget: {
+            icon: "📱🎧",
+            title: "แกดเจ็ต & ไอทีไอเทมกิ๊บเก๋",
+            desc: "<b>สายล้ำ & แก้ปัญหาเก่ง:</b><br>คุณชอบความสะดวกสบาย ทันสมัย และมักจะหาตัวช่วยดีๆ มาแก้ปัญหาชีวิตประจำวันได้เสมอ การขายแกดเจ็ตเจ๋งๆ จะทำให้คุณสนุกและพรีเซนต์ได้น่าสนใจมาก!"
+        }
+    };
+
+    function startQuiz() {
+        document.getElementById('pBar').style.display = 'block';
+        nextQuestion(1);
+    }
+
+    function nextQuestion(step) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        currentStep = step;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        document.getElementById('pFill').style.width = `${(currentStep / 6) * 100}%`;
+    }
+
+    function answer(type) {
+        scores[type]++;
+        if (currentStep < 6) {
+            nextQuestion(currentStep + 1);
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById('pBar').style.display = 'none';
+        currentStep = 'result';
+        document.getElementById('step-result').classList.add('active');
+
+        let maxType = 'perfume';
+        let maxScore = -1;
+        for (let type in scores) {
+            if (scores[type] > maxScore) {
+                maxScore = scores[type];
+                maxType = type;
             }
-        ];
-
-        function playMeowSound() {
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(800, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.1, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.start(); osc.stop(ctx.currentTime + 0.3);
-            } catch(e) {}
         }
 
-        function selectEmoji(index) {
-            selectedIndex = index % catData.length;
-            openModeModal();
-        }
+        const res = results[maxType];
+        document.getElementById('resIcon').textContent = res.icon;
+        document.getElementById('resTitle').textContent = res.title;
+        document.getElementById('resDesc').innerHTML = res.desc;
+    }
 
-        function openModeModal() {
-            document.getElementById("mode-modal").style.display = "flex";
-        }
+    function restart() {
+        scores = { perfume: 0, coffee: 0, accessories: 0, healthy: 0, plant: 0, gadget: 0 };
+        document.getElementById('step-result').classList.remove('active');
+        currentStep = 0;
+        document.getElementById('step-0').classList.add('active');
+        document.getElementById('pFill').style.width = '0%';
+    }
+</script>
 
-        function generateOracle(mode) {
-            document.getElementById("mode-modal").style.display = "none";
-            document.getElementById("quiz-section").style.display = "none";
-            document.getElementById("result-section").style.display = "block";
-
-            playMeowSound();
-
-            // สุ่มจำนวนปลาทูแก้เคล็ด (1 ถึง 5 ตัว)
-            requiredFeedCount = Math.floor(Math.random() * 5) + 1;
-            currentFeedCount = 0;
-
-            // รีเซ็ตปุ่มและสถานะการแก้เคล็ด
-            document.getElementById("cleared-stamp").style.display = "none";
-            document.getElementById("download-btn").style.display = "none";
-            document.getElementById("feed-btn").style.display = "block";
-            document.getElementById("feed-btn").disabled = false;
-            
-            updateFeedStatusText();
-
-            const currentCat = catData[selectedIndex];
-            const data = currentCat['mode' + mode];
-
-            document.getElementById("mode-badge").innerText = data.badge;
-            document.getElementById("cat-avatar").innerText = currentCat.avatar;
-            document.getElementById("cat-title").innerText = data.title;
-            document.getElementById("cat-desc").innerText = data.desc;
-            document.getElementById("extra-info").innerText = `${data.extra}  |  🐟 แก้เคล็ด: ถวายปลาทู ${requiredFeedCount} ตัว`;
-
-            const tagsContainer = document.getElementById("cat-tags");
-            tagsContainer.innerHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
-
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
-        }
-
-        function updateFeedStatusText() {
-            const remaining = requiredFeedCount - currentFeedCount;
-            if (remaining > 0) {
-                document.getElementById("feed-status-text").innerText = `คำทำนายนี้ต้องให้อาหารแก้เคล็ดอีก ${remaining} ครั้ง! 🐟`;
-            } else {
-                document.getElementById("feed-status-text").innerText = `🎉 ถวายปลาทูครบแล้ว! แก้เคล็ดสำเร็จ`;
-            }
-        }
-
-        function feedCat() {
-            if (currentFeedCount < requiredFeedCount) {
-                currentFeedCount += 1;
-                playMeowSound();
-                updateFeedStatusText();
-
-                // เอฟเฟกต์ปลาทูเด้ง
-                for (let i = 0; i < 4; i++) {
-                    const fish = document.createElement("div");
-                    fish.className = "fish-particle";
-                    fish.innerText = ["🐟", "🥫", "🐾"][Math.floor(Math.random() * 3)];
-                    fish.style.left = Math.random() * 80 + 10 + "vw";
-                    fish.style.top = "80vh";
-                    document.body.appendChild(fish);
-                    setTimeout(() => fish.remove(), 1200);
-                }
-
-                // เมื่อกดให้อาหารครบตามกำหนด
-                if (currentFeedCount >= requiredFeedCount) {
-                    document.getElementById("cleared-stamp").style.display = "block";
-                    document.getElementById("feed-btn").style.display = "none"; // ซ่อนปุ่มปลาทู
-                    document.getElementById("download-btn").style.display = "block"; // แสดงปุ่มดาวน์โหลดรูปภาพ
-                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-                }
-            }
-        }
-
-        function downloadCard() {
-            const cardElement = document.getElementById("cat-card");
-            html2canvas(cardElement, { scale: 2, backgroundColor: null }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Cat-Oracle-ID.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
-        function resetQuiz() {
-            document.getElementById("result-section").style.display = "none";
-            document.getElementById("quiz-section").style.display = "block";
-        }
-    </script>
 </body>
 </html>
